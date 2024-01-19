@@ -7,16 +7,16 @@ const PhoneList = () => {
     const [phones, setPhones] = useState<Phones>([])
     const [filteredPhones, setFilteredPhones] = useState<Phones>([])
 
-    // const handleFilterPhones = () => {
-    //     setFilteredPhones(phones
-    //         .filter(phone => phone.name.toLowerCase().includes(query.toLowerCase()) || !query)
-    //         .sort((a, b) => {
-    //             if (orderProp === "name") {
-    //                 return a.name.localeCompare(b.name)
-    //             }
-    //             return b.age - a.age
-    //         }))
-    // }
+    const handleFilterPhones = () => {
+        setFilteredPhones(phones
+            .filter(phone => phone.name.toLowerCase().includes(query.toLowerCase()) || !query)
+            .sort((a, b) => {
+                if (orderProp === "name") {
+                    return a.name.localeCompare(b.name)
+                }
+                return b.age - a.age
+            }).reverse())
+    }
 
     const handleSetQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
         setQuery(event.target.value)
@@ -37,9 +37,9 @@ const PhoneList = () => {
     useEffect(() => {
         handleFetchPhones()
     }, [])
-    // useEffect(() => {
-    //     handleFilterPhones()
-    // }, [query, orderProp, phones])
+    useEffect(() => {
+        handleFilterPhones()
+    }, [query, orderProp, phones])
     if (!phones || !filteredPhones) return null
     return (
         <div className="container-fluid">
@@ -61,23 +61,15 @@ const PhoneList = () => {
                 <div className="col-md-10">
                     {/* Body content */}
                     <ul className="phones">
-                        {filteredPhones
-                            .filter(phone => phone.name.toLowerCase().includes(query.toLowerCase()) || !query)
-                            .sort((a, b) => {
-                                if (orderProp === "name") {
-                                    return a.name.localeCompare(b.name)
-                                }
-                                return b.age - a.age
-                            }).reverse()
-                            .map(phone => (
-                                <li className="thumbnail phone-list-item" key={phone.age}>
-                                    <Link to={`${phone.id}`} className="thumb">
-                                        <img src={phone.imageUrl} alt={phone.name} />
-                                    </Link>
-                                    <Link to={`/phones/${phone.id}`}>{phone.name}</Link>
-                                    <p>{phone.snippet}</p>
-                                </li>
-                            ))}
+                        {filteredPhones.map(phone => (
+                            <li className="thumbnail phone-list-item" key={phone.age}>
+                                <Link to={`${phone.id}`} className="thumb">
+                                    <img src={phone.imageUrl} alt={phone.name} />
+                                </Link>
+                                <Link to={`/phones/${phone.id}`}>{phone.name}</Link>
+                                <p>{phone.snippet}</p>
+                            </li>
+                        ))}
                     </ul>
                 </div>
             </div>
