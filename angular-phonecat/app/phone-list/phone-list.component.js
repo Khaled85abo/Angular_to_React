@@ -7,9 +7,10 @@ angular.
     templateUrl: 'phone-list/phone-list.template.html',
     controller: ['Phone',
       function PhoneListController(Phone) {
+        const vm = this
         // this.query= ""
-        this.phones = Phone.query();
-        this.orderProp = 'age';
+        vm.phones = Phone.query();
+        vm.orderProp = 'age';
       }
     ]
   });
